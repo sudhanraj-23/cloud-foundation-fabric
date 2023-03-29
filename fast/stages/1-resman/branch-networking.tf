@@ -45,7 +45,7 @@ module "branch-network-folder" {
   }
 }
 
-module "branch-network-prod-folder" {
+/*module "branch-network-prod-folder" {
   source = "../../../modules/folder"
   parent = module.branch-network-folder.id
   name   = "Production"
@@ -81,7 +81,7 @@ module "branch-network-dev-folder" {
       null
     )
   }
-}
+}*/
 
 # automation service account and bucket
 
