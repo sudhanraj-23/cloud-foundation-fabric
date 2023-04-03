@@ -16,21 +16,11 @@
 
 # tfdoc:file:description Networking stage resources.
 
-module "branch-network-folder" {
+module "branch-non-prod-folder" {
   source = "../../../modules/folder"
   parent = "organizations/${var.organization.id}"
-  name   = "shared-resources"
-  group_iam = local.groups.gcp-network-admins == null ? {} : {
-    (local.groups.gcp-network-admins) = [
-      # add any needed roles for resources/services not managed via Terraform,
-      # or replace editor with ~viewer if no broad resource management needed
-      # e.g.
-      #   "roles/compute.networkAdmin",
-      #   "roles/dns.admin",
-      #   "roles/compute.securityAdmin",
-      "roles/editor",
-    ]
-  }
+  name   = "no-prod"
+ 
   iam = {
     "roles/logging.admin"                  = [module.branch-network-sa.iam_email]
     "roles/owner"                          = [module.branch-network-sa.iam_email]
@@ -38,37 +28,21 @@ module "branch-network-folder" {
     "roles/resourcemanager.projectCreator" = [module.branch-network-sa.iam_email]
     "roles/compute.xpnAdmin"               = [module.branch-network-sa.iam_email]
     "roles/iam.serviceAccountTokenCreator" = [module.branch-network-sa.iam_email]
+    "roles/browser"                        = [module.branch-network-sa.iam_email]
   }
   tag_bindings = {
     context = try(
-      module.organization.tag_values["${var.tag_names.context}/networking"].id, null
+      module.organization.tag_values["${var.tag_names.context}/teams"].id, null
     )
   }
 }
 
 # automation service account and bucket
 
-module "branch-network-sa" {
-  source       = "../../../modules/iam-service-account"
-  project_id   = var.automation.project_id
-  name         = "prod-resman-net-0"
-  display_name = "Terraform resman networking service account."
-  prefix       = var.prefix
-  iam = {
-    "roles/iam.serviceAccountTokenCreator" = compact([
-      try(module.branch-network-sa-cicd.0.iam_email, null)
-    ])
-  }
-  iam_storage_roles = {
-    (var.automation.outputs_bucket) = ["roles/storage.admin"]
-  }
-}
-
-
-module "branch-network-gcs" {
+module "branch-non-prod-gcs" {
   source        = "../../../modules/gcs"
   project_id    = var.automation.project_id
-  name          = "prod-resman-net-0"
+  name          = "non-prod"
   prefix        = var.prefix
   location      = var.locations.gcs
   storage_class = local.gcs_storage_class

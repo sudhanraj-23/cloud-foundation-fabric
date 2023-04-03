@@ -283,3 +283,20 @@ variable "vpn_onprem_configs" {
     }
   }
 }
+
+/*
+# project id
+variable "project-id" {
+  description = "project-id"
+  type = object({
+    dev   = string
+    qa = string
+    prod = string
+
+  })
+  default = {
+    dev   = 
+    prod =
+  }
+}
+*/

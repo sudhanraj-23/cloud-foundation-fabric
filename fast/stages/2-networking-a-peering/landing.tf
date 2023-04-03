@@ -42,6 +42,15 @@ module "host-project" {
   }
 }
 
+
+/*
+resource "google_organization_policy" "shared_vpc_policy" {
+  
+  constraint = "constraints/compute.restrictSharedVpcHostProjects"
+  enforcement_mode = "DENY"
+}
+*/
+
 module "transit-vpc" {
   source     = "../../../modules/net-vpc"
   project_id = module.host-project.project_id

@@ -33,7 +33,7 @@ output "id" {
   value       = local.folder.name
   depends_on = [
     google_folder_iam_binding.authoritative,
-    google_org_policy_policy.default,
+    #google_org_policy_policy.default,
   ]
 }
 

@@ -51,9 +51,6 @@ compute.restrictProtocolForwardingCreationForTypes:
   deny:
     all: true
 
-# compute.restrictSharedVpcHostProjects:
-#   deny:
-#     all: true
 
 # compute.restrictSharedVpcSubnetworks:
 #   deny:
@@ -80,3 +77,7 @@ compute.setNewProjectDefaultToZonalDNSOnly:
 essentialcontacts.allowedContactDomains:
   allow:
     all: true
+
+#compute.restrictSharedVpcHostProjects:
+#  deny:
+#    all: true
